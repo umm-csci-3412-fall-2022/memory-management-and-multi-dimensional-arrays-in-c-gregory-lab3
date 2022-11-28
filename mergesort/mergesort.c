@@ -1,23 +1,13 @@
 #include "mergesort.h"
+#include <cstdlib>
 
-
-
-void mergesortRange(int values[], int startIndex, int endIndex){
-	int rangeSize = endIndex - startIndex;
-	if(rangeSize >= 2){
-		int midPoint = (startIndex + endIndex)/2;
-		mergesortRange(values, startIndex, midPoint);
-		mergesortRange(values, midPoint, endIndex);
-		mergeRanges(values, startIndex, midPoint, endIndex);
-	}
-}
 
 void mergeRanges(int values[], int startIndex, int midPoint, int endIndex) {
 	// Assume the two ranges are sorted.
-	int rangeSize = endIndex - startIndex;
-	int destination[] = (*int) calloc(rangesize, sizeof(int));
+	int rangesize = endIndex - startIndex + 1;
+	int* destination = (int*) calloc(rangesize, sizeof(int));
 	int firstIndex = startIndex;
-	int secondIndex = midPoint;
+	int secondIndex = midPoint + 1;
 	int copyIndex = 0;
 
 	while((firstIndex <= midPoint) && secondIndex <= endIndex){
@@ -31,25 +21,38 @@ void mergeRanges(int values[], int startIndex, int midPoint, int endIndex) {
 	++copyIndex;
 	}
 
-	while(firstIndex<midPoint){
+	while(firstIndex<=midPoint){
 			destination[copyIndex] =  values[firstIndex];
 			++firstIndex;
 			++copyIndex;
 	}
 
-	while(secondIndex<endIndex){
-		destination[copyIndex] = values[firstIndex];
+	while(secondIndex<=endIndex){
+		destination[copyIndex] = values[secondIndex];
 		++secondIndex;
 		++copyIndex;
 	}
 
-	for (int i=0, i<rangeSize; ++i) {
+	for (int i=0; i<rangesize; ++i) {
 		values[i + startIndex] = destination[i];
+	}
+	free(destination);
+}
+
+void mergesortRange(int values[], int startIndex, int endIndex){
+	int rangesize = (endIndex - startIndex) + 1;
+	if(rangesize >= 2){
+		int midPoint = (startIndex + endIndex)/2;
+		mergesortRange(values, startIndex, midPoint);
+		mergesortRange(values, midPoint + 1, endIndex);
+		mergeRanges(values, startIndex, midPoint, endIndex);
 	}
 }
 
+
+
 void mergesort(int size, int values[]) {
-  mergesortRange(values, 0, size);
+  mergesortRange(values, 0, size-1);
 }
 
   // This obviously doesn't actually do any *sorting*, so there's
@@ -59,5 +62,5 @@ void mergesort(int size, int values[]) {
   // `malloc/calloc` and `free`, so make sure you explicitly
   // allocate any new arrays that you need, even if you
   // might not strictly need to.
- 
-}
+
+
