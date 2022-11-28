@@ -5,7 +5,7 @@
 void mergeRanges(int values[], int startIndex, int midPoint, int endIndex) {
 	// Assume the two ranges are sorted.
 	int rangesize = endIndex - startIndex + 1;
-	int* destination = (int*) calloc(rangesize, sizeof(int));
+	int destination = (int*) calloc(rangesize, sizeof(int));
 	int firstIndex = startIndex;
 	int secondIndex = midPoint + 1;
 	int copyIndex = 0;
