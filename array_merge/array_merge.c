@@ -2,29 +2,46 @@
 #include "../mergesort/mergesort.h"
 #include <cstdlib>
 
-int adduparray(int* sizes){
+int totalNumElements(int* sizes, int num_arrays){
 	int count = 0;
-	for(int i=1; i<=num_arrays; ++i){
+	for(int i=0; i<num_arrays; ++i){
 		count = (count + sizes[i]);
-				}
-
-int* array_merge(int num_arrays, int* sizes, int** values) {
-  	int resultsize = adduparray(sizes);
-
-	int* result = (int*) calloc(resultsize, sizeof(int));
-
-	int currentarraysize = 0;
-	result[0] =  num_arrays;
-
-	for (int i=1; i<num_arrays; ++i){
-		currentarraysize = sizes[i];
-		for(int j=1; j<=num_arrays; ++j){
-			if(isDuplicate())
-
-  return result;
+		}
 }
 
-bool isDuplicate(int num, int* mergingarray){
-	if(num == mergingarray[i]){
-		return true;
+bool notDuplicate(int num, int* resultArray, currentResultIndex){
+	bool boole = true
+	for(int i=0; i<=currentResultIndex; ++i){
+		if(num == mergingarray[i]){
+		boole = false
+		}
 	}
+	return boole;
+}
+
+int* array_merge(int num_arrays, int* sizes, int** values) {
+  	int resultSize = totalNumElements(sizes, num_arrays);
+
+	int* result = (int*) calloc(resultSize, sizeof(int));
+
+	int currentArraySize = 0;
+	int currentResultIndex = 0;
+
+	for (int i=0; i<num_arrays; ++i){
+		currentArraySize = sizes[i];
+		for (int j=0; j<currentArraySize; ++j){
+			if(notDuplicate(values[i][j], result, currentResultIndex)){
+				result[currentResultIndex]= values[i][j];
+				currentResultIndex++
+				}
+		}
+	}
+	// Resize according to how many nonduplicates were added +1 slot for the num of non duplicate elements.
+	int* finalResult = (int*) calloc(currentResultIndex+1, sizeof(int));
+	finalResult[0] = currentResultIndex+1;
+
+	for(int i=0, i<=currentResultIndex; ++i){
+		finalResult[i+1] = result[i];
+	}
+	return finalResult;
+}
